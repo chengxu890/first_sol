@@ -3,15 +3,21 @@ from scripts.helpful_scripts import (
     get_account,
     deploy_mocks,
     LOCAL_BLOCKCHAIN_ENVIRONMENTS,
+    FORKED_LOCAL_ENVIRONMENTS,
 )
 
 
 def deploy_fund_me():
     account = get_account()
-    if network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS:
+  
+    if (
+        network.show_active() not in LOCAL_BLOCKCHAIN_ENVIRONMENTS
+        and network.show_active() not in FORKED_LOCAL_ENVIRONMENTS
+    ):
         price_feed_address = config["networks"][network.show_active()][
             "eth_usd_price_feed"
         ]
+
     else:
         deploy_mocks()
         price_feed_address = MockV3Aggregator[-1].address
